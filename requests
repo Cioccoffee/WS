@@ -14,6 +14,30 @@ dbo:birthPlace
 dbo:movement
 dbp:works
 
+dbo:abstract (vue détaillée)
+rdfs:comment (voir avec abstract)
+
+dbp:nationality
+dct:description (shorter than abstract)
+foaf:surname
+dbo:author
+foaf:depiction
+
+#complex request
+
+select distinct ?name, ?depiction, ?deathDate, ?deathPlace, ?birthDate, ?movement
+where {
+dbr:Pablo_Picasso rdfs:label ?name;
+foaf:depiction ?depiction;
+dbo:deathDate ?deathDate;
+dbo:deathPlace ?deathPlace;
+dbo:birthDate ?birthDate;
+dbo:birthPlace ?birthPlace;
+dbo:movement ?movement.
+Filter(lang(?name) = "fr").
+}
+LIMIT 1
+
 
 #get artists from movement's dbr id
 select ?s 

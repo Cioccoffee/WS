@@ -15,4 +15,8 @@ dbo:movement
 dbp:works
 
 
-#artists in movement :
+#get artists from movement's dbr id
+select ?s 
+where{
+?s dbo:movement dbr:Surrealism
+}

@@ -21,3 +21,9 @@ where{
 ?s dbo:movement dbr:Surrealism
 }
 LIMIT 10
+
+#get pictures of painter's works:
+select distinct ?p ?depict where {
+?p dct:subject ?sub ;dbo:author dbr:Pablo_Picasso ;foaf:depiction ?depict
+FILTER(CONTAINS(str(?sub),"Painting"))
+}

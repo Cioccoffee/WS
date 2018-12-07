@@ -1,0 +1,7 @@
+# basic query : name, pic according to dbr id
+select ?name, ?depiction
+where {
+dbr:Pablo_Picasso rdfs:label ?name.
+dbr:Pablo_Picasso foaf:depiction ?depiction.
+Filter(lang(?name) = "fr").
+} 

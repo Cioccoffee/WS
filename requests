@@ -25,6 +25,7 @@ foaf:depiction
 
 #complex request
 
+##ESSAI1
 select distinct ?name, ?depiction, ?deathDate, ?deathPlace, ?birthDate, ?movement, ?nationality, ?description, ?abstract
 where {
 dbr:Pablo_Picasso rdfs:label ?name.
@@ -42,6 +43,27 @@ Filter(lang(?name) = "fr").
 Filter(lang(?abstract) = "fr").
 }
 LIMIT 1
+
+##ESSAI2
+select distinct ?name, ?depiction, ?deathDate, ?deathPlace, ?birthDate, ?movement, ?nationality, ?description, ?abstract
+where {
+dbr:Jasper_Johns rdfs:label ?name.
+OPTIONAL {
+dbr:Jasper_Johns foaf:depiction ?depiction.}
+OPTIONAL {
+dbr:Jasper_Johns
+dbo:deathDate ?deathDate;
+dbo:deathPlace ?deathPlace;
+dbo:birthDate ?birthDate;
+dbo:birthPlace ?birthPlace;
+dbo:movement ?movement;
+dbp:nationality ?nationality;
+dct:description ?description;
+dbo:abstract ?abstract.
+}
+Filter(lang(?name) = "fr").
+Filter(lang(?abstract) = "fr").
+}
 
 
 #get artists from movement's dbr id

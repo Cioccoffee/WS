@@ -1,0 +1,12 @@
+dbo:abstract (vue détaillée)
+rdfs:comment (voir avec abstract)
+dbo:birthDate
+dbo:birthName
+dbo:birthPlace
+dbo:deathDate
+dbo:movement
+dbp:nationality
+dct:description (shorter than abstract)
+foaf:surname
+dbo:author
+foaf:depiction

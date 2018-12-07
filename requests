@@ -73,6 +73,7 @@ where{
 }
 LIMIT 10
 
+###################################################################################################################
 #get pictures of painter's works:
 select DISTINCT ?picture ?title ?year ?description ?depiction where {
 ?picture a dbo:Work;
@@ -90,4 +91,49 @@ OPTIONAL {
 FILTER(CONTAINS(lcase(str(?subject)),"painting"))
 FILTER(lang(?title) = "en")
 FILTER(lang(?description) = "en")
+}
+###################################################################################################################
+#get painters given the movement
+select DISTINCT ?painter where{
+VALUES ?original_mov {dbr:High_Renaissance} #Here goes the movement
+   ?painter a yago:Painter110391653.
+   {
+      {
+         ?painter dbo:movement ?original_mov. 
+      }
+      UNION
+      {
+         ?painter dbp:movement ?original_mov. 
+      }
+  }
+}
+###################################################################################################################
+#get painters with the same movement as the given painter:
+
+select DISTINCT ?painter ?movement where{
+VALUES ?original {dbr:Pablo_Picasso}. #Here goes the given painter
+
+   {
+      {
+         ?original dbo:movement ?mov1 
+      }
+      UNION
+      {
+         ?original dbp:movement ?mov1
+      }
+   }
+
+  ?painter a yago:Painter110391653.
+
+   {
+      {
+         ?painter dbo:movement ?movement
+      }
+      UNION
+      {
+         ?painter dbp:movement ?movement
+      }
+  }
+FILTER (?mov1 = ?movement AND ?painter != ?original)
+
 }

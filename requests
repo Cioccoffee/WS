@@ -5,3 +5,14 @@ dbr:Pablo_Picasso rdfs:label ?name.
 dbr:Pablo_Picasso foaf:depiction ?depiction.
 Filter(lang(?name) = "fr").
 } 
+
+#other attributes
+dbo:deathDate
+dbo:deathPlace
+dbo:birthDate
+dbo:birthPlace
+dbo:movement
+dbp:works
+
+
+#artists in movement :

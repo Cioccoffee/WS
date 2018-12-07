@@ -143,3 +143,31 @@ FILTER (?mov1 = ?movement AND ?painter != ?original)
 }
 
 ###########################################################################################################################
+##Get some basic info about the given painter
+##>> Issues: Needs some refinement, some dates are duplicated, and some rows are duplicated because their may be more than one movement 
+select DISTINCT ?name ?gender ?depiction ?nationality ?birth_date ?death_date ?movement ?abstract where {
+VALUES ?painter {dbr:Pablo_Picasso} # Here goes the painter
+?painter foaf:name ?name.
+?painter dbo:abstract ?abstract.
+OPTIONAL {?painter foaf:gender ?gender}
+OPTIONAL {?painter foaf:depiction ?depiction}
+OPTIONAL {?painter dbp:nationality ?nationality}
+OPTIONAL {?painter dbo:birthDate ?birth_date}
+OPTIONAL {?painter dbo:deathDate ?death_date}
+OPTIONAL {{?painter dbo:movement ?movement} UNION {?painter dbp:movement ?movement}}
+
+FILTER (lang(?name) = "en")
+FILTER (lang(?gender) = "en")
+
+FILTER (lang(?abstract) = "en")
+}
+
+###########################################################################################################################
+#Get painters with the same nationality as the given painter
+
+select * where {
+dbr:Pablo_Picasso dbp:nationality ?nationality.
+?painter a yago:Painter110391653.
+?painter dbp:nationality ?nationality
+}
+###########################################################################################################################

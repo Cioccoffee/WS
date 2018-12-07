@@ -20,3 +20,4 @@ select ?s
 where{
 ?s dbo:movement dbr:Surrealism
 }
+LIMIT 10

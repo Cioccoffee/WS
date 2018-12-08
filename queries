@@ -79,7 +79,7 @@ LIMIT 10
 
 ###########################################################################################################################
 #get pictures of painter's works:
-select DISTINCT ?picture ?title ?year ?description ?depiction where {
+select DISTINCT ?picture ?title ?year ?description ?type ?depiction where {
 ?picture a dbo:Work;
          dbo:author dbr:Leonardo_da_Vinci; ## Here goas the author we are looking for.
          rdfs:label ?title;
@@ -91,11 +91,15 @@ OPTIONAL {
              ?picture dbp:year ?year
               FILTER(datatype(?year) = xsd:date OR datatype(?year) = xsd:integer)
          }
-
+OPTIONAL {
+            ?picture dbp:type [rdfs:label ?type]
+          }
+          
 FILTER(CONTAINS(lcase(str(?subject)),"painting"))
 FILTER(lang(?title) = "en")
 FILTER(lang(?description) = "en")
-
+FILTER(lang(?museum) = "en")
+}
 ###########################################################################################################################
 #get painters given the movement
 select DISTINCT ?painter where{
@@ -158,9 +162,14 @@ dbr:Pablo_Picasso dbp:nationality ?nationality.
 ?painter a yago:Painter110391653.
 ?painter dbp:nationality ?nationality
 }
-
 ###########################################################################################################################
-#Get painters influenced by the given one.
+#Get painters influenced the given one
+select ?painter where{ #Pablo_Picasso is the given painter.
+dbr:Pablo_Picasso dbo:influencedBy ?painter.
+?painter a yago:Painter110391653.
+}
+###########################################################################################################################
+#Get painters influenced by the given one
 select ?painter where{
 ?painter a yago:Painter110391653; dbo:influencedBy dbr:Pablo_Picasso #Here goes the painter
 }

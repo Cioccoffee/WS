@@ -79,7 +79,7 @@ LIMIT 10
 
 ###########################################################################################################################
 #get pictures of painter's works:
-select DISTINCT ?picture ?title ?year ?description ?type ?depiction where {
+select DISTINCT ?picture ?title max(?year) as ?year ?description min(?type) as ?type ?depiction where {
 ?picture a dbo:Work;
          dbo:author dbr:Leonardo_da_Vinci; ## Here goas the author we are looking for.
          rdfs:label ?title;
@@ -94,11 +94,11 @@ OPTIONAL {
 OPTIONAL {
             ?picture dbp:type [rdfs:label ?type]
           }
-          
+
 FILTER(CONTAINS(lcase(str(?subject)),"painting"))
 FILTER(lang(?title) = "en")
 FILTER(lang(?description) = "en")
-FILTER(lang(?museum) = "en")
+FILTER(lang(?type) = "en")
 }
 ###########################################################################################################################
 #get painters given the movement
@@ -137,7 +137,7 @@ FILTER (?mov1 = ?movement AND ?painter != ?original)
 ###########################################################################################################################
 ##Get some basic info about the given painter
 ##>> Issues: Needs some refinement, some dates are duplicated, and some rows are duplicated because their may be more than one movement
-select DISTINCT ?name ?gender ?depiction ?nationality ?birth_date ?death_date ?movement ?abstract where {
+select DISTINCT max(str(?name)) as ?name str(?gender) as ?gender ?depiction str(?nationality) as ?nationality max(str(?birth_date)) as ?birth_date max(str(?death_date)) as ?death_date str(?abstract) where {
 VALUES ?painter {dbr:Pablo_Picasso} # Here goes the painter
 ?painter foaf:name ?name.
 ?painter dbo:abstract ?abstract.
@@ -146,11 +146,9 @@ OPTIONAL {?painter foaf:depiction ?depiction}
 OPTIONAL {?painter dbp:nationality ?nationality}
 OPTIONAL {?painter dbo:birthDate ?birth_date}
 OPTIONAL {?painter dbo:deathDate ?death_date}
-OPTIONAL {{?painter dbo:movement ?movement} UNION {?painter dbp:movement ?movement}}
 
 FILTER (lang(?name) = "en")
 FILTER (lang(?gender) = "en")
-
 FILTER (lang(?abstract) = "en")
 }
 
@@ -173,3 +171,4 @@ dbr:Pablo_Picasso dbo:influencedBy ?painter.
 select ?painter where{
 ?painter a yago:Painter110391653; dbo:influencedBy dbr:Pablo_Picasso #Here goes the painter
 }
+

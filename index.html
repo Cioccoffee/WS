@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+
 <html>
     <head>
         <!-- En-tête de la page -->
@@ -8,21 +10,24 @@
     </head>
     <body>
       <script src ="scripts/jquery-3.3.1.min.js"></script>
-      <script src="scripts/index.js"></script>
-
+      <script src="scripts/LevenshteinDistance.js"></script>
         <!-- Corps de la page -->
         <section>
           <img id="logo" src="images/logo.png" alt="Company logo">
           <h1> Picassearch </h1>
           <h2> Your painter browser </h2>
 
-          <form id="research_form" class="rounded_corners" onsubmit="return start_research()">
+          <form id="research_form" class="rounded_corners" onsubmit="searchPainters(); return false;" >
               <input id="research_bar" placeholder ="Entrez le nom d'un peintre" type="text" name="fname" autofocus>
-              <input id="research_button" type="image" src="images/search-icon2.png" alt="Submit Form image" />
+              <input id="research_button" type="image" src="images/search-icon2.png" alt="Submit Form image"/>
+              <!--<button type="button" id="research_button"><img src="images/search-icon2.png" alt="Submit form image"/></button>-->
           </form>
 
           <blockquote> L’art est à l’homme ce que la nature est à Dieu. </blockquote>
           <cite>Victor Hugo</cite>
         </section>
+        <div id="resultZone">
+
+        </div>
     </body>
 </html>

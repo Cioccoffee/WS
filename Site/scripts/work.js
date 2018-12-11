@@ -15,6 +15,7 @@ function getUrlParam(param){
             WORK  = parameterName[1] === undefined ? true : decodeURIComponent(parameterName[1]);
         }
     }
+	console.log(WORK);
 }
 //-----------------------------------------------
 
@@ -35,34 +36,48 @@ function fillAuthor(resource,data){
 function fillDetailedPaintings(data){
   for (obj of data){
     //var newResource = obj["work"]["value"].replace("http://dbpedia.org/resource/","");
-	$("#depiction").append("<p>"+ obj["depiction"]["value"] + "</p>");
-	$("#informations").append("<h4>"+ obj["title"]["value"] + "</h4>");
-	$("#informations").append("<p>"+ obj["year"]["value"] + "</p>");
+	//$("#depiction").append("<p>"+ obj["depiction"]["value"] + "</p>");
+	if (obj.depiction !== undefined)
+		$("#img_depiction").attr("src",obj["depiction"]["value"]);
+    if (obj.title !== undefined)
+	    $("#informations").append("<h3>"+ obj["title"]["value"] + "</h3>");
+	if (obj.year !== undefined)
+		$("#informations").append("<p>"+ obj["year"]["value"] + "</p>");
 
     //$("#informations").append("<p>"+ obj["author"]["value"] + "</p>");
-	var newResource = obj["author"]["value"].replace("http://dbpedia.org/resource/","");
-	sendQueryWithParam(prepareGetNameAuthorQuery(newResource),fillAuthor,newResource);
-
-
-	$("#informations").append("<p>"+ obj["description"]["value"] + "</p>");
-	$("#informations").append("<p>"+ obj["type"]["value"] + "</p>");
+	if (obj.author !== undefined) {
+		var newResource = obj["author"]["value"].replace("http://dbpedia.org/resource/","");
+		sendQueryWithParam(prepareGetNameAuthorQuery(newResource),fillAuthor,newResource);
+	}
+	if (obj.description !== undefined)
+		$("#informations").append("<p>"+ obj["description"]["value"] + "</p>");
+	if (obj.type !== undefined)
+		$("#informations").append("<p>"+ obj["type"]["value"] + "</p>");
 	}
 	console.log(data);
 }
 
 function prepareDetailedPaintingsQuery(){ //UP-TO-DATE
   return "select DISTINCT ?author ?title str(?description) as ?description ?depiction ?year ?type where {\
-         dbr:"+WORK+" a dbo:Work;\
-         dbo:author ?author;\
-         rdfs:label ?title;\
-         foaf:depiction ?depiction;\
-         dbo:abstract ?description.\
+         <http://dbpedia.org/resource/"+WORK+"> a dbo:Work.\
+		OPTIONAL {\
+           <http://dbpedia.org/resource/"+WORK+"> dbo:author ?author\
+		}\
+		OPTIONAL {\
+           <http://dbpedia.org/resource/"+WORK+"> rdfs:label ?title\
+		}\
+		 OPTIONAL {\
+           <http://dbpedia.org/resource/"+WORK+"> foaf:depiction ?depiction\
+		}\
+		 OPTIONAL {\
+           <http://dbpedia.org/resource/"+WORK+"> dbo:abstract ?description\
+		}\
          OPTIONAL {\
-           dbr:"+WORK+" dbp:year ?year\
+           <http://dbpedia.org/resource/"+WORK+">  dbp:year ?year\
            FILTER(datatype(?year) = xsd:date OR datatype(?year) = xsd:integer)\
          }\
          OPTIONAL {\
-           dbr:"+WORK+" dbp:type [rdfs:label ?type]\
+           <http://dbpedia.org/resource/"+WORK+">  dbp:type [rdfs:label ?type]\
            FILTER(lang(?type) = \"en\")\
          }\
         FILTER(lang(?title) = \"en\")\

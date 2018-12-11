@@ -1,4 +1,4 @@
-var PAINTER;
+ var PAINTER;
 $(document).ready(function(){
   launch();
 })
@@ -20,7 +20,8 @@ function getUrlParam(param){
 
 function launch(){
   getUrlParam("painter"); // Put the value in the global variable PAINTER
-  sendQuery(prepareDetailedPaintingsQuery(), fillDetailedPaintings);
+  sendQuery(prepareGeneralInfoQuery(), fillGeneralInfo);
+  sendQuery(prepareBriefPaintingsQuery(), fillBriefPaintings);
 }
 
 function fillInfluenced(data){
@@ -30,10 +31,51 @@ function fillInfluenced(data){
   }
 }
 function fillGeneralInfo(data){
-  console.log(JSON.stringify(data));
+
+  // Page titles
+  $("#painter_name").text(data[0]["name"]["value"]);
+  $("#tab_title").text("Picassearch - " + data[0]["name"]["value"]);
+
+  // depiction
+  $("#depiction").attr("src",  data[0]["depiction"]["value"] );
+  $("#description").text("TODO");
+
+  // Abstract
+  $("#abstract").text(data[0]["abstract"]["value"]);
+
+  // Infos
+  $("#identity").append("<tr><td>Nationality: </td><td>" +  data[0]["nationality"]["value"] + "</td></tr>");
+  $("#identity").append("<tr><td>Birth name: </td><td> TODO </td></tr>");
+  $("#identity").append("<tr><td>Birth date: </td><td>" +  data[0]["birth_date"]["value"] + "</td></tr>");
+  $("#identity").append("<tr><td>Birth place: </td><td> TODO </td></tr>");
+  $("#identity").append("<tr><td>Death date: </td><td>" +  data[0]["death_date"]["value"] + "</td></tr>");
+  $("#identity").append("<tr><td>Movements: </td><td> TODO </td></tr>");
 }
 function fillBriefPaintings(data){
   console.log(data);
+
+  var col = 0;
+  var nb_artwork_by_line = 4;
+  var table = "";
+  for (object of data)
+  {
+      if (col == 0)
+      {
+          table += "<tr>"
+      }
+
+      table += "<td><img class=\"pictures\" src=\"" + object["depiction"]["value"] + "\">" + "</td>";
+
+      col = col + 1;
+      if ( col == nb_artwork_by_line)
+      {
+        table += "</tr>"
+        col = 0;
+      }
+  }
+
+  $("#artworks").append(table);
+
 }
 function fillDetailedPaintings(data){
   console.log(data);
@@ -69,7 +111,7 @@ function prepareBriefPaintingsQuery(){
          FILTER(lang(?title) = \"en\")}";
 }
 function prepareGeneralInfoQuery(){
-  return "select DISTINCT max(str(?name)) as ?name str(?gender) as ?gender ?depiction str(?nationality) as ?nationality max(str(?birth_date)) as ?birth_date max(str(?death_date)) as ?death_date str(?abstract) where { \
+  return "select DISTINCT max(str(?name)) as ?name str(?gender) as ?gender ?depiction str(?nationality) as ?nationality max(str(?birth_date)) as ?birth_date max(str(?death_date)) as ?death_date str(?abstract) as ?abstract where { \
   VALUES ?painter {dbr:" + PAINTER +"}\
   ?painter foaf:name ?name.\
   ?painter dbo:abstract ?abstract.\

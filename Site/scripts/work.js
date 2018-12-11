@@ -28,7 +28,7 @@ function fillAuthor(resource,data){
   console.log(data);
   for (obj of data){
     //var newResource = obj["work"]["value"].replace("http://dbpedia.org/resource/","");
-	$("#informations").append("<tr><td>Author</td><td>"
+	$("#informations").append("<tr><td><b>Author</b></td><td>"
 		+ "<a href=\"painter.html?painter=" +resource+ "\">" + obj["name"]["value"] + "</a><br/>" 
 		+ "</td></tr>");
 	//$("#informations").append("<a href=\"painter.html?painter=" +resource+ "\">" + obj["name"]["value"] + "</a><br/>");
@@ -49,9 +49,9 @@ function fillDetailedPaintings(data){
 		$("#description").append("<p> No description available </p>");
 
 	if (obj.year !== undefined)
-		$("#informations").append("<tr><td>Year</td><td>"+ obj["year"]["value"] + "</td></tr>");
+		$("#informations").append("<tr><td><b>Year</b></td><td>"+ obj["year"]["value"] + "</td></tr>");
 	else
-		$("#informations").append("<tr><td>Year</td><td> unknown </td></tr>");
+		$("#informations").append("<tr><td><b>Year</b></td><td> unknown </td></tr>");
 		
 	if (obj.author !== undefined) {
 		var newResource = obj["author"]["value"].replace("http://dbpedia.org/resource/","");
@@ -59,9 +59,9 @@ function fillDetailedPaintings(data){
 	}
 	
 	if (obj.type !== undefined)
-		$("#informations").append("<tr><td>Type</td><td>"+ obj["type"]["value"] + "</td></tr>");
+		$("#informations").append("<tr><td><b>Type</b></td><td>"+ obj["type"]["value"] + "</td></tr>");
 	else
-		$("#informations").append("<tr><td>Type</td><td> unknown </td></tr>");
+		$("#informations").append("<tr><td><b>Type</b></td><td> unknown </td></tr>");
 
 	console.log(data);
 	}

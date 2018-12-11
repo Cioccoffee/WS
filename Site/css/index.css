@@ -64,6 +64,7 @@ h2
   height: 100%;
 }
 
+
 /* citation */
 blockquote {
   font-family: Georgia, serif;
@@ -80,4 +81,28 @@ blockquote cite {
   font-size: 14px;
   display: block;
   margin-top: 10%;
+}
+
+/**Affichage des resultats**/
+#query_title{
+	font-style:italic;
+	text-decoration:underline;
+}
+
+table{
+	width:100%;
+}
+table, tr, td{
+	border: 1px solid black;
+}
+tr{
+	height:50px;
+
+}
+tr:hover{
+	background-color : #aaaaaa;
+}
+td {
+	vertical-align:middle;
+	text-align:center
 }

@@ -48,19 +48,20 @@ function getClosestNames(research){
     url:queryUrl,
     success:function(result){
       //We've got all names, let's search for the closest one(s)
-      var html="<h1 style=\"align:center\">Search Results</h1><table style=\"width:100%\">";
   		searchTerms = research.split(" ");
+  		results=[];
       for (var i =0; i<result.results.bindings.length; i++){
         var resource = result.results.bindings[i].p.value.substr(result.results.bindings[i].p.value.lastIndexOf("/")+1);
         resource=toASCII(resource);
         subItems = resource.split(/[_-]/g);
-        console.log(subItems);
         var allMatch=true;
+        var distance=0;
         for (var j = 0; j<searchTerms.length; j++){
         	found=false;
         	for(var k=0; k<subItems.length; k++){
-		      	if (LevenshteinDistance(searchTerms[j],subItems[k])<2){
-		      		
+        		var localDistance=LevenshteinDistance(searchTerms[j],subItems[k]);
+		      	if (localDistance<3){
+		      		distance+=localDistance;
 		  				found=true;
 		          break;
 		        }
@@ -70,9 +71,22 @@ function getClosestNames(research){
         		break;
         	}
         }
-        if(allMatch){
-					html+="<tr><th><a href=\"html/painter.html?painter="+resource+"\">"+resource+"</a></th></tr>\n";
-				}
+        if (allMatch){
+        	results.push({resource : resource, distance:distance});
+        }
+      }
+      console.log(results);
+      results.sort(function compare(a, b){
+      	if (a.distance<b.distance){
+      		return -1;
+      	}if (a.distance>b.distance){
+      		return 1;
+      	}
+      	return 0;
+      });
+      var html="<h1 id=\"query_title\">Search Results</h1><table style=\"width:100%\">";
+      for(var i=0; i<results.length; i++){
+				html+="<tr><td><a href=\"html/painter.html?painter="+results[i].resource+"\">"+results[i].resource.replace(/[_]/g," ")+"</a></td></tr>\n";
       }
   		section=$("#resultZone")[0];
   		html+="</table>";

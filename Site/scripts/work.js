@@ -28,33 +28,43 @@ function fillAuthor(resource,data){
   console.log(data);
   for (obj of data){
     //var newResource = obj["work"]["value"].replace("http://dbpedia.org/resource/","");
-	$("#informations").append("<a href=\"painter.html?painter=" +resource+ "\">" + obj["name"]["value"] + "</a><br/>");
+	$("#informations").append("<tr><td>Author</td><td>"
+		+ "<a href=\"painter.html?painter=" +resource+ "\">" + obj["name"]["value"] + "</a><br/>" 
+		+ "</td></tr>");
+	//$("#informations").append("<a href=\"painter.html?painter=" +resource+ "\">" + obj["name"]["value"] + "</a><br/>");
 	//$("#informations").append("<p> Author : "+ obj["name"]["value"] + "</p>");
   }
 }
 
 function fillDetailedPaintings(data){
   for (obj of data){
-    //var newResource = obj["work"]["value"].replace("http://dbpedia.org/resource/","");
-	//$("#depiction").append("<p>"+ obj["depiction"]["value"] + "</p>");
 	if (obj.depiction !== undefined)
 		$("#img_depiction").attr("src",obj["depiction"]["value"]);
-    if (obj.title !== undefined)
-	    $("#informations").append("<h3>"+ obj["title"]["value"] + "</h3>");
-	if (obj.year !== undefined)
-		$("#informations").append("<p>"+ obj["year"]["value"] + "</p>");
 
-    //$("#informations").append("<p>"+ obj["author"]["value"] + "</p>");
+    if (obj.title !== undefined)
+	    $("#description").append("<h3>"+ obj["title"]["value"] + "</h3>");
+	if (obj.description !== undefined)
+		$("#description").append("<p>"+ obj["description"]["value"] + "</p>");
+	else
+		$("#description").append("<p> No description available </p>");
+
+	if (obj.year !== undefined)
+		$("#informations").append("<tr><td>Year</td><td>"+ obj["year"]["value"] + "</td></tr>");
+	else
+		$("#informations").append("<tr><td>Year</td><td> unknown </td></tr>");
+		
 	if (obj.author !== undefined) {
 		var newResource = obj["author"]["value"].replace("http://dbpedia.org/resource/","");
 		sendQueryWithParam(prepareGetNameAuthorQuery(newResource),fillAuthor,newResource);
 	}
-	if (obj.description !== undefined)
-		$("#informations").append("<p>"+ obj["description"]["value"] + "</p>");
+	
 	if (obj.type !== undefined)
-		$("#informations").append("<p>"+ obj["type"]["value"] + "</p>");
-	}
+		$("#informations").append("<tr><td>Type</td><td>"+ obj["type"]["value"] + "</td></tr>");
+	else
+		$("#informations").append("<tr><td>Type</td><td> unknown </td></tr>");
+
 	console.log(data);
+	}
 }
 
 function prepareDetailedPaintingsQuery(){ //UP-TO-DATE

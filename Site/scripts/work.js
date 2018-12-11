@@ -1,4 +1,4 @@
-var PAINTER;
+var WORK;
 $(document).ready(function(){
   launch();
 })
@@ -12,14 +12,14 @@ function getUrlParam(param){
         parameterName = uRLVariables[i].split('=');
 
         if (parameterName[0] === param) {
-            PAINTER  = parameterName[1] === undefined ? true : decodeURIComponent(parameterName[1]);
+            WORK  = parameterName[1] === undefined ? true : decodeURIComponent(parameterName[1]);
         }
     }
 }
 //-----------------------------------------------
 
 function launch(){
-  getUrlParam("painter"); // Put the value in the global variable PAINTER
+  getUrlParam("work"); // Put the value in the global variable PAINTER
   sendQuery(prepareDetailedPaintingsQuery(), fillDetailedPaintings);
 }
 
@@ -38,23 +38,21 @@ function fillBriefPaintings(data){
 function fillDetailedPaintings(data){
   console.log(data);
 }
-function prepareDetailedPaintingsQuery(){
-  return "select DISTINCT ?picture ?title max(?year) as ?year str(?description) as ?description min(?type) as ?type ?depiction where {\
-         ?picture a dbo:Work;\
-         dbo:author dbr:" + PAINTER + ";\
+function prepareDetailedPaintingsQuery(){ //UP-TO-DATE
+  return "select DISTINCT ?author ?title str(?description) as ?description ?depiction ?year ?type where {\
+         dbr:"+WORK+" a dbo:Work;\
+         dbo:author ?author;\
          rdfs:label ?title;\
          foaf:depiction ?depiction;\
-         dct:subject ?subject;\
          dbo:abstract ?description.\
          OPTIONAL {\
-           ?picture dbp:year ?year\
+           dbr:"+WORK+" dbp:year ?year\
            FILTER(datatype(?year) = xsd:date OR datatype(?year) = xsd:integer)\
          }\
          OPTIONAL {\
-           ?picture dbp:type [rdfs:label ?type]\
+           dbr:"+WORK+" dbp:type [rdfs:label ?type]\
            FILTER(lang(?type) = \"en\")\
          }\
-        FILTER(CONTAINS(lcase(str(?subject)),\"painting\"))\
         FILTER(lang(?title) = \"en\")\
         FILTER(lang(?description) = \"en\")}";
 }

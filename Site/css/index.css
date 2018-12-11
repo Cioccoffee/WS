@@ -82,6 +82,7 @@ blockquote cite {
   display: block;
   margin-top: 10%;
 }
+<<<<<<< HEAD
 
 /**Affichage des resultats**/
 #query_title{
@@ -106,3 +107,14 @@ td {
 	vertical-align:middle;
 	text-align:center
 }
+=======
+img{
+    max-width:500px;
+	margin:50px 50px 50px 50px;
+}
+
+.flexi { 
+	display:flex;
+}
+
+>>>>>>> 0d16449f2548cab390505056a0319c3e10f2b261

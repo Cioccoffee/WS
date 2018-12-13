@@ -1,15 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1"> 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="../scripts/painter.js"></script>
-<meta charset="utf8"/>
-<title>Title of the document</title>
+<link rel="stylesheet" href="../css/painter.css" type="text/css" />
+ <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+<!-- UnigGallery -->
+<script type='text/javascript' src='../scripts/unitegallery.min.js'></script>
+<link rel='stylesheet' href='../css/unite-gallery.css' type='text/css' />
+<script src='../scripts/ug-theme-tilesgrid.js' type='text/javascript'></script>
+<!--             -->
+<meta charset="UTF-8">
+<title id="docTitle">Title of the document</title>
 </head>
 
-<body>
-<div id="influenced">
-</div>
+  <img id="painterImage" style="display:none;"/>
+  <h3 id="painterName"></h3>
+  <h4> General Info:</h4>
+  <table id="generalInfoTable"></table>
+  <h4> Brief Biography:</h4>
+  <blockquote id="painterAbstract"></blockquote>
+  </div>
+  <h4 id="h4paintings" style="display:none">His known paintings:</h4>
+
+  <div id="gallery" style="display:none;"></div>
+  <h4 id="h4influencedBy" style="display:none">He is influenced by:</h4>
+  <div id="galleryInfluencedBy" style="display:none;"></div>
+
+  <h4 id="h4influenced" style="display:none">He has influenced:</h4>
+  <div id="galleryInfluenced" style="display:none;"></div>
+  <h4 id="h4sameNat" style="display:none">Painter from the same country:</h4>
+  <div id="gallerySameNationality" style="display:none;"></div>
+  <h4 id="h4sameMov" style="display:none">Painter from the same movement:</h4>
+  <div id="gallerySameMovement" style="display:none;"></div>
+
 </body>
 </html>

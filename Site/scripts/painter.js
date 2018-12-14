@@ -130,6 +130,7 @@ function fillInfluencedBy(data){
 }
 function fillGeneralInfo(data){
   var painterObj = data[0];
+  
   var name = painterObj["name"]["value"];
   var abstract = painterObj["abstract"]["value"];
 console.log(data);

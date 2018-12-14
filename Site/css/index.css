@@ -1,10 +1,13 @@
 /* title */
-
+body
+{
+  font-family: sans-serif;
+}
 
 /* section */
-section
+#mainSection
 {
-  margin-top: 7%;
+  margin-top: 3%;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -82,16 +85,33 @@ blockquote cite {
   display: block;
   margin-top: 10%;
 }
-<<<<<<< HEAD
+
+.othersSection
+{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+#resultZone
+{
+  margin-top: 1.5%;
+}
+
 
 /**Affichage des resultats**/
 #query_title{
 	font-style:italic;
-	text-decoration:underline;
+  font-weight: normal;
+  font-size: 200%;
+  margin-bottom: 1%;
 }
 
 table{
-	width:100%;
+	width:30%;
+  border-collapse: collapse;
 }
 table, tr, td{
 	border: 1px solid black;
@@ -105,16 +125,16 @@ tr:hover{
 }
 td {
 	vertical-align:middle;
-	text-align:center
+	text-align:center;
+  cursor:pointer;
+  font-size: 150%;
 }
-=======
+
 img{
     max-width:500px;
 	margin:50px 50px 50px 50px;
 }
 
-.flexi { 
+.flexi {
 	display:flex;
 }
-
->>>>>>> 0d16449f2548cab390505056a0319c3e10f2b261

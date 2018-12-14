@@ -143,11 +143,11 @@ console.log(data);
   $("#generalInfoTable").append("<tr><td><b>Name</b> </td><td>" + name + "</td></tr>");
 	document.getElementById("tab_title").innerHTML =  name;
   if (painterObj["birth_date"] != undefined)
-    $("#generalInfoTable").append("<tr><td><b>Born</b></td><td id='birth-place'>" + painterObj["birth_date"]["value"] + ", </td></tr>");
+    $("#generalInfoTable").append("<tr><td><b>Born</b></td><td id='birth-place'>" + painterObj["birth_date"]["value"] + "</td></tr>");
 	if (painterObj["birthPlace"] != undefined)
 		sendQuery(preparePlacesQuery(painterObj["birthPlace"]["value"]),fillBirthPlace);
   if (painterObj["death_date"] != undefined) 
-    $("#generalInfoTable").append("<tr><td><b>Died</b></td><td id='death-place'>" + painterObj["death_date"]["value"] + ", </td></tr>");
+    $("#generalInfoTable").append("<tr><td><b>Died</b></td><td id='death-place'>" + painterObj["death_date"]["value"] + "</td></tr>");
 	if (painterObj["deathPlace"] != undefined)
 		sendQuery(preparePlacesQuery(painterObj["deathPlace"]["value"]),fillDeathPlace);
   if (painterObj["gender"] != undefined){
@@ -165,7 +165,7 @@ function fillBirthPlace(data){
 	console.log(data);
 	var placeObj = data[0];
 	if (placeObj["name"] != undefined) {
-		$("#birth-place").append(placeObj["name"]["value"]);	
+		$("#birth-place").append(", "+placeObj["name"]["value"]);	
 	}
 
 }
@@ -174,7 +174,7 @@ function fillDeathPlace(data){
 	console.log(data);
 	var placeObj = data[0];
 	if (placeObj["name"] != undefined) {
-		$("#death-place").append(placeObj["name"]["value"]);	
+		$("#death-place").append(", "+placeObj["name"]["value"]);	
 	}
 
 }

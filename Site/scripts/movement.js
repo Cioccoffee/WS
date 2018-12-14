@@ -33,7 +33,8 @@ function fillMovement(data){
 	if (obj.description !== undefined)
 		$("#description").append("<p>"+ obj["description"]["value"] + "</p>");
 	else
-		$("#description").append("<p> No description available </p>")
+		$("#description").append("<p> No description available </p>");
+	annotate("#description");
 	sendQuery(prepareQueryArtists(),fillArtists);
 }
 

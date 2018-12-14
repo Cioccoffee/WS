@@ -6,4 +6,7 @@ img{
 .flexi { 
 	display:flex;
 }
+ul {
+	list-style-type: none;
+}
 

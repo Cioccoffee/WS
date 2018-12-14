@@ -27,12 +27,9 @@ function launch(){
 function fillAuthor(resource,data){
   console.log(data);
   for (obj of data){
-    //var newResource = obj["work"]["value"].replace("http://dbpedia.org/resource/","");
 	$("#informations").append("<tr><td><b>Author</b></td><td>"
 		+ "<a href=\"painter.html?painter=" +resource+ "\">" + obj["name"]["value"] + "</a><br/>" 
 		+ "</td></tr>");
-	//$("#informations").append("<a href=\"painter.html?painter=" +resource+ "\">" + obj["name"]["value"] + "</a><br/>");
-	//$("#informations").append("<p> Author : "+ obj["name"]["value"] + "</p>");
   }
 }
 

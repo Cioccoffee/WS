@@ -37,6 +37,23 @@ function fillMovement(data){
 	sendQuery(prepareQueryArtists(),fillArtists);
 }
 
+function fillArtists(data) {
+	console.log(data);
+	for (artist of data) {
+		if (artist["painter"] !== undefined){
+			var dbrArtist = artist["painter"]["value"];
+			sendQueryWithParam(prepareQueryArtistName(dbrArtist),fillArtist,dbrArtist);
+		}
+	}
+}
+
+function fillArtist(resource,data){
+	console.log(data);
+	var artist = data[0];
+	$("#painters-mov").append("<li>"
+		+ "<a href=\"painter.html?painter=" +resource+ "\">" + artist["name"]["value"] + "</a><br/>" 
+		+ "</li>");
+}
 function prepareMovementQuery(){ //UP-TO-DATE
   return "select ?name str(?description) as ?description where {\
          <http://dbpedia.org/resource/"+MOVEMENT+"> rdfs:label ?name.\
@@ -61,6 +78,11 @@ function prepareQueryArtists() {
 				}"
 }
 
+function prepareQueryArtistName(dbr) {
+
+	return "select ?name where {<"+dbr+"> foaf:name ?name. FILTER(lang(?name) = \"en\")}";
+
+}
 function sendQuery(query,func){
   URL = "http://dbpedia.org/sparql";
   var queryUrl = encodeURI(URL + "?query=" + query + "&format=json");
@@ -76,3 +98,5 @@ function sendQueryWithParam(query,func,param){
     func(param,response.results.bindings);
   });
 }
+
+

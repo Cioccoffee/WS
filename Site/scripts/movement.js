@@ -21,7 +21,7 @@ function getUrlParam(param){
 
 function launch(){
   getUrlParam("movement"); // Put the value in the global variable PAINTER
-  sendQuery(prepareDetailedPaintingsQuery(), fillDetailedPaintings);
+  sendQuery(prepareMovementQuery(), fillMovement);
 }
 
 function fillMovement(data){
@@ -33,28 +33,11 @@ function fillMovement(data){
 	if (obj.description !== undefined)
 		$("#description").append("<p>"+ obj["description"]["value"] + "</p>");
 	else
-		$("#description").append("<p> No description available </p>");
-
-	if (obj.year !== undefined)
-		$("#informations").append("<tr><td><b>Year</b></td><td>"+ obj["year"]["value"] + "</td></tr>");
-	else
-		$("#informations").append("<tr><td><b>Year</b></td><td> unknown </td></tr>");
-		
-	if (obj.author !== undefined) {
-		var newResource = obj["author"]["value"].replace("http://dbpedia.org/resource/","");
-		sendQueryWithParam(prepareGetNameAuthorQuery(newResource),fillAuthor,newResource);
-	}
-	
-	if (obj.type !== undefined)
-		$("#informations").append("<tr><td><b>Type</b></td><td>"+ obj["type"]["value"] + "</td></tr>");
-	else
-		$("#informations").append("<tr><td><b>Type</b></td><td> unknown </td></tr>");
-
-	console.log(data);
-	}
+		$("#description").append("<p> No description available </p>")
+	sendQuery(prepareQueryArtists(),fillArtists);
 }
 
-function prepareDetailedMovementQuery(){ //UP-TO-DATE
+function prepareMovementQuery(){ //UP-TO-DATE
   return "select ?name str(?description) as ?description where {\
          <http://dbpedia.org/resource/"+MOVEMENT+"> rdfs:label ?name.\
 		OPTIONAL {\
@@ -63,7 +46,20 @@ function prepareDetailedMovementQuery(){ //UP-TO-DATE
         FILTER(lang(?name) = \"en\")\
         FILTER(lang(?description) = \"en\")}";
 }
-
+function prepareQueryArtists() {
+	return "select DISTINCT ?painter where{\
+						VALUES ?original_mov {<http://dbpedia.org/resource/"+MOVEMENT+">} \
+		 				?painter a yago:Painter110391653.{\
+							{\
+								 ?painter dbo:movement ?original_mov.\
+							}\
+							UNION\
+							{\
+								 ?painter dbp:movement ?original_mov.\
+							}\
+  					}\
+				}"
+}
 
 function sendQuery(query,func){
   URL = "http://dbpedia.org/sparql";

@@ -52,7 +52,7 @@ function getClosestNames(research){
   		results=[];
       for (var i =0; i<result.results.bindings.length; i++){
         var resource = result.results.bindings[i].p.value.substr(result.results.bindings[i].p.value.lastIndexOf("/")+1);
-        resource=toASCII(resource);
+        //resource=toASCII(resource);
         subItems = resource.split(/[_-]/g);
         var allMatch=true;
         var distance=0;

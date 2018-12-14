@@ -140,6 +140,7 @@ console.log(data);
       $("#painterImage").css("display","block");
   }
   $("#generalInfoTable").append("<tr><td><b>Name</b> </td><td>" + name + "</td></tr>");
+	document.getElementById("tab_title").innerHTML =  name;
   if (painterObj["birth_date"] != undefined)
     $("#generalInfoTable").append("<tr><td><b>Born</b></td><td id='birth-place'>" + painterObj["birth_date"]["value"] + ", </td></tr>");
 	if (painterObj["birthPlace"] != undefined)

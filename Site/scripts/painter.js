@@ -219,7 +219,7 @@ function fillDetailedPaintings(data){
 function prepareDetailedPaintingsQuery(){
   return "select DISTINCT ?picture ?title max(?year) as ?year str(?description) as ?description min(?type) as ?type ?depiction where {\
          ?picture a dbo:Work;\
-         dbo:author dbr:" + PAINTER + ";\
+         dbo:author <http://dbpedia.org/resource/" + PAINTER + ">;\
          rdfs:label ?title;\
          foaf:depiction ?depiction;\
          dct:subject ?subject;\
@@ -239,7 +239,7 @@ function prepareDetailedPaintingsQuery(){
 function prepareBriefPaintingsQuery(){
   return "select DISTINCT ?picture str(?title) as ?title ?depiction where {\
          ?picture a dbo:Work;\
-         dbo:author dbr:" + PAINTER + ";\
+         dbo:author <http://dbpedia.org/resource/" + PAINTER + ">;\
          rdfs:label ?title;\
          foaf:depiction ?depiction;\
          dct:subject ?subject.\
@@ -249,7 +249,7 @@ function prepareBriefPaintingsQuery(){
 function prepareGeneralInfoQuery(){
 
   return "select DISTINCT max(str(?name)) as ?name str(?gender) as ?gender ?depiction str(?nationality) as ?nationality max(str(?birth_date)) as ?birth_date max(str(?death_date)) as ?death_date str(?abstract) as ?abstract ?birthPlace ?deathPlace where { \
-  VALUES ?painter {dbr:" + PAINTER +"}\
+  VALUES ?painter {<http://dbpedia.org/resource/" + PAINTER +">}\
   ?painter foaf:name ?name.\
   ?painter dbo:abstract ?abstract.\
   OPTIONAL {?painter foaf:gender ?gender}\
@@ -270,13 +270,13 @@ function preparePlacesQuery(place){
 	 FILTER (lang(?name) = \"en\")}"
 }
 function prepareInfluencedQuery(){
-   return "select ?painter ?depiction max(str(?name)) as ?name where{?painter a yago:Painter110391653; foaf:name ?name; dbo:influencedBy dbr:"+ PAINTER +" OPTIONAL {?painter foaf:depiction ?depiction} FILTER (lang(?name)=\"en\")} ORDER BY DESC (?depiction)";
+   return "select ?painter ?depiction max(str(?name)) as ?name where{?painter a yago:Painter110391653; foaf:name ?name; dbo:influencedBy <http://dbpedia.org/resource/"+ PAINTER +"> OPTIONAL {?painter foaf:depiction ?depiction} FILTER (lang(?name)=\"en\")} ORDER BY DESC (?depiction)";
 }
 function prepareMovementsQuery(){
   return "select str(?movement) as ?movement where { \
-    {{dbr:" + PAINTER + " dbo:movement [rdfs:label ?movement]}\
+    {{<http://dbpedia.org/resource/" + PAINTER + "> dbo:movement [rdfs:label ?movement]}\
     UNION\
-     {dbr:" + PAINTER + " dbp:movement [rdfs:label ?movement]}}\
+     {<http://dbpedia.org/resource/" + PAINTER + "> dbp:movement [rdfs:label ?movement]}}\
      FILTER (lang(?movement)=\"en\")\
    }"
 }
@@ -284,22 +284,22 @@ function prepareInfluencedByQuery(){
   return "select ?painter max(str(?name)) as ?name ?depiction where{\
           ?painter a yago:Painter110391653; foaf:name ?name.\
           OPTIONAL {?painter foaf:depiction ?depiction}\
-          {{dbr:" + PAINTER + " dbo:influencedBy ?painter} UNION {dbr:" + PAINTER + " dbp:influencedBy ?painter}}\
+          {{<http://dbpedia.org/resource/" + PAINTER + "> dbo:influencedBy ?painter} UNION {<http://dbpedia.org/resource/" + PAINTER + "> dbp:influencedBy ?painter}}\
           FILTER (lang(?name) = \"en\").\
           }";
 }
 function prepareSameNationalityQuery(){
   return "select ?painter max(str(?name)) as ?name ?depiction where{\
-          dbr:" + PAINTER + " dbp:nationality ?nationality.\
+          <http://dbpedia.org/resource/" + PAINTER + "> dbp:nationality ?nationality.\
           ?painter a yago:Painter110391653; dbp:nationality ?nationality; foaf:name ?name.\
           OPTIONAL {?painter foaf:depiction ?depiction}\
-          FILTER (lang(?name) = \"en\" AND ?painter != dbr:" + PAINTER + ")\
+          FILTER (lang(?name) = \"en\" AND ?painter != <http://dbpedia.org/resource/" + PAINTER + ">)\
         }\
         ORDER BY DESC (?depiction)";
 }
 function prepareSameMovementQuery(){
   return "select ?painter max(str(?name)) as ?name ?depiction where{\
-          VALUES ?original {dbr:" + PAINTER + "}.\
+          VALUES ?original {<http://dbpedia.org/resource/" + PAINTER + ">}.\
           {?original dbo:movement ?movement} UNION {?original dbp:movement ?movement}.\
           ?painter a yago:Painter110391653; foaf:name ?name.\
           OPTIONAL {?painter foaf:depiction ?depiction}.\

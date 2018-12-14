@@ -195,7 +195,8 @@ function fillBriefPaintings(data){
   for (picture of data){
     var imageSource = picture["depiction"]["value"];
     var imageTitle = picture["title"]["value"].replace(/\(.*\)/g,"");
-    var imageURI = "work.html?work=" + picture["picture"]["value"].replace("http://dbpedia.org/resource/","");
+    var imageURI = "work.html?work=" + picture["picture"]["value"].replace("http://dbpedia.org/resource/","").replace(/\'/g,"%27");
+    console.log(imageURI);
     $("#gallery").append("<a href = \""+ imageURI +"\"><img src = \"" + imageSource + "\" + data-image=\"" + imageSource + "\" + alt=\"" + imageTitle + "\"></a>");
   }
 

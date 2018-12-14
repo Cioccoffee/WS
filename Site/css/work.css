@@ -1,10 +1,38 @@
+* {
+  font-family: 'Roboto', sans-serif;
+
+}
 
 img{
-    max-width:500px;
-	margin:50px 50px 50px 50px;
+  opacity: 1;
+  background-color: rgb(240, 240, 240);
+  border-width: 3px;
+  border-style: solid;
+  border-color: rgb(240, 240, 240);
+  border-radius: 2px;
+  box-shadow: rgb(139, 139, 139) 1px 1px 3px 2px;
+  width: auto;
+  margin: auto;
+  left: 10px;
+  top: 10px;
+  max-width: 400px;
+  max-height: 400px;
+  min-width: 300px;
+  min-height: 300px;
+
 }
 
 .flexi { 
 	display:flex;
 }
 
+#description{
+  border-left: 5px solid #4ca694;
+  padding: 20px 30px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: justify;
+  margin: auto auto auto 30px;
+  flex-grow: 8;
+}

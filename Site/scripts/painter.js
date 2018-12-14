@@ -132,37 +132,59 @@ function fillGeneralInfo(data){
   var painterObj = data[0];
   var name = painterObj["name"]["value"];
   var abstract = painterObj["abstract"]["value"];
-
+console.log(data);
   $("#docTitle").html(name);
   $("#painterName").html(name);
   if (painterObj["depiction"] != undefined) {
       $("#painterImage").attr("src",painterObj["depiction"]["value"]);
       $("#painterImage").css("display","block");
   }
-  $("#generalInfoTable").append("<tr><td>Name: </td><td>" + name + "</td></tr>");
-  if (painterObj["birth_date"] != undefined) {
-    $("#generalInfoTable").append("<tr><td>Birthdate: </td><td>" + painterObj["birth_date"]["value"] + "</td></tr>");
-  }
-  if (painterObj["death_date"] != undefined) {
-    $("#generalInfoTable").append("<tr><td>Deathdate: </td><td>" + painterObj["death_date"]["value"]  + "</td></tr>");
-  }
+  $("#generalInfoTable").append("<tr><td><b>Name</b> </td><td>" + name + "</td></tr>");
+	document.getElementById("tab_title").innerHTML =  name;
+  if (painterObj["birth_date"] != undefined)
+    $("#generalInfoTable").append("<tr><td><b>Born</b></td><td id='birth-place'>" + painterObj["birth_date"]["value"] + ", </td></tr>");
+	if (painterObj["birthPlace"] != undefined)
+		sendQuery(preparePlacesQuery(painterObj["birthPlace"]["value"]),fillBirthPlace);
+  if (painterObj["death_date"] != undefined) 
+    $("#generalInfoTable").append("<tr><td><b>Died</b></td><td id='death-place'>" + painterObj["death_date"]["value"] + ", </td></tr>");
+	if (painterObj["deathPlace"] != undefined)
+		sendQuery(preparePlacesQuery(painterObj["deathPlace"]["value"]),fillDeathPlace);
   if (painterObj["gender"] != undefined){
-    $("#generalInfoTable").append("<tr><td>Gender: </td><td>" + painterObj["gender"]["value"] + "</td></tr>");
+    $("#generalInfoTable").append("<tr><td><b>Gender</b></td><td>" + painterObj["gender"]["value"] + "</td></tr>");
   }
   if (painterObj["nationality"] != undefined){
-    $("#generalInfoTable").append("<tr><td>Nationality: </td><td>" + painterObj["nationality"]["value"] + "</td></tr>");
+    $("#generalInfoTable").append("<tr><td><b>Nationality</b></td><td>" + painterObj["nationality"]["value"] + "</td></tr>");
   }
   $("#painterAbstract").html(abstract);
   annotate("#painterAbstract");
   sendQuery(prepareMovementsQuery(), fillMovements);
 }
+
+function fillBirthPlace(data){
+	console.log(data);
+	var placeObj = data[0];
+	if (placeObj["name"] != undefined) {
+		$("#birth-place").append(placeObj["name"]["value"]);	
+	}
+
+}
+
+function fillDeathPlace(data){
+	console.log(data);
+	var placeObj = data[0];
+	if (placeObj["name"] != undefined) {
+		$("#death-place").append(placeObj["name"]["value"]);	
+	}
+
+}
+
 function fillMovements(data){
   var movs = [];
   for (mov of data){
     movs.push(mov["movement"]["value"])
   }
   if(movs != [])
-    $("#generalInfoTable").append("<tr><td>Movements: </td><td>" + movs.join(', ') + "</td></tr>");
+    $("#generalInfoTable").append("<tr><td><b>Movements</b></td><td>" + movs.join(', ') + "</td></tr>");
 
 }
 function fillBriefPaintings(data){
@@ -226,19 +248,26 @@ function prepareBriefPaintingsQuery(){
 }
 function prepareGeneralInfoQuery(){
 
-  return "select DISTINCT max(str(?name)) as ?name str(?gender) as ?gender ?depiction str(?nationality) as ?nationality max(str(?birth_date)) as ?birth_date max(str(?death_date)) as ?death_date str(?abstract) as ?abstract where { \
+  return "select DISTINCT max(str(?name)) as ?name str(?gender) as ?gender ?depiction str(?nationality) as ?nationality max(str(?birth_date)) as ?birth_date max(str(?death_date)) as ?death_date str(?abstract) as ?abstract ?birthPlace ?deathPlace where { \
   VALUES ?painter {dbr:" + PAINTER +"}\
   ?painter foaf:name ?name.\
   ?painter dbo:abstract ?abstract.\
   OPTIONAL {?painter foaf:gender ?gender}\
   OPTIONAL {?painter foaf:depiction ?depiction}\
   OPTIONAL {?painter dbp:nationality ?nationality}\
+  OPTIONAL {?painter dbo:birthPlace ?birthPlace}\
   OPTIONAL {?painter dbo:birthDate ?birth_date}\
+  OPTIONAL {?painter dbo:deathPlace ?deathPlace}\
   OPTIONAL {?painter dbo:deathDate ?death_date}\
   FILTER (lang(?name) = \"en\")\
   FILTER (lang(?gender) = \"en\")\
   FILTER (lang(?abstract) = \"en\")}";
 
+}
+
+function preparePlacesQuery(place){
+	return "select ?name where {<"+place+"> rdfs:label ?name. \
+	 FILTER (lang(?name) = \"en\")}"
 }
 function prepareInfluencedQuery(){
    return "select ?painter ?depiction max(str(?name)) as ?name where{?painter a yago:Painter110391653; foaf:name ?name; dbo:influencedBy dbr:"+ PAINTER +" OPTIONAL {?painter foaf:depiction ?depiction} FILTER (lang(?name)=\"en\")} ORDER BY DESC (?depiction)";

@@ -41,8 +41,10 @@ function fillDetailedPaintings(data){
 	if (obj.depiction !== undefined)
 		$("#img_depiction").attr("src",obj["depiction"]["value"]);
 
-    if (obj.title !== undefined)
+    if (obj.title !== undefined){
 	    $("#description").append("<h2>"+ obj["title"]["value"] + "</h2>");
+		document.getElementById("tab_title").innerHTML =  obj["title"]["value"];
+	}
 	if (obj.description !== undefined)
 		$("#description").append("<p>"+ obj["description"]["value"] + "</p>");
 	else

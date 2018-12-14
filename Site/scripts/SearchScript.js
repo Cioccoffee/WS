@@ -84,9 +84,9 @@ function getClosestNames(research){
       	}
       	return 0;
       });
-      var html="<h1 id=\"query_title\">Search Results</h1><table style=\"width:100%\">";
+      var html="<h3 id=\"query_title\">Search Results</h3><table>";
       for(var i=0; i<results.length; i++){
-				html+="<tr><td><a href=\"html/painter.html?painter="+results[i].resource+"\">"+results[i].resource.replace(/[_]/g," ")+"</a></td></tr>\n";
+				html+="<tr><td onclick=\"location.href=\'html/painter.html?painter="+results[i].resource+"\'\">" + results[i].resource.replace(/[_]/g," ")+"</td></tr>\n";
       }
   		section=$("#resultZone")[0];
   		html+="</table>";

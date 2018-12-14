@@ -2,6 +2,7 @@ function annotate(id){
 	var text= ($(id)[0]).innerHTML;
 	var url="http://model.dbpedia-spotlight.org/en/annotate";
 	var textURI=encodeURI(text);
+	console.log(url);
   	var queryUrl=url+"?text="+textURI+"&confidence=0.95&format=json";
 	$.ajax({
 		url:queryUrl,
@@ -13,51 +14,26 @@ function annotate(id){
 			for(var i=0; i<result.Resources.length; i++){
 				newText+=text.substr(prec, parseInt(result.Resources[i]["@offset"],10)-prec);
 				//console.log(text.substr(prec, parseInt(result.Resources[i]["@offset"],10)-prec));
-				var queryPainter="ASK WHERE { <"+result.Resources[i]["@URI"]+"> a ?p. FILTER(?p=yago:Painter110391653)}";
-				var queryPainting="ASK WHERE { <"+result.Resources[i]["@URI"]+"> a dbo:Work; dbo:author ?painter. ?painter a yago:Painter110391653}";
-				var queryMovement = "ASK WHERE { <"+result.Resources[i]["@URI"]+"> dct:subject dbc:Art_movements}";
+				var queryType = ["select ?v where {OPTIONAL{<", result.Resources[i]["@URI"],"> a yago:Painter110391653 VALUES ?v {\"Painter\"}} OPTIONAL{<",result.Resources[i]["@URI"],"> a dbo:Work; dbo:author ?painter. ?painter a yago:Painter110391653 VALUES ?v {\"Painting\"}} OPTIONAL {<",result.Resources[i]["@URI"],"> dct:subject dbc:Art_movements VALUES ?v {\"Movement\"}}}"].join("");
 				var found = false;
 				$.ajax({
-					url:"http://dbpedia.org/sparql?query="+encodeURI(queryPainter)+"&format=json",
+					url:"http://dbpedia.org/sparql?query="+encodeURI(queryType)+"&format=json",
 					type:"GET",
 					dataType:"json",
 					async:false,
 				}).done(function (answer){
-					if (answer.boolean){
-						var link = "<a href=\"../html/painter.html?painter=";
-						link+=result.Resources[i]["@URI"].substr(result.Resources[i]["@URI"].lastIndexOf("/")+1);
-						link+="\">";
-						link+=result.Resources[i]["@surfaceForm"];
-						link+="</a>";
-						newText+=link;
-						found=true;
-					}
-				});
-				$.ajax({
-					url:"http://dbpedia.org/sparql?query="+encodeURI(queryPainting)+"&format=json",
-					type:"GET",
-					dataType:"json",
-					async:false,
-				}).done(function (answer){
-					if (answer.boolean){
-						var link = "<a href=\"../html/work.html?work=";
-						link+=result.Resources[i]["@URI"].substr(result.Resources[i]["@URI"].lastIndexOf("/")+1);
-						link+="\">";
-						link+=result.Resources[i]["@surfaceForm"];
-						link+="</a>";
-						newText+=link;
-						found=true;
-					}
-				});
-				$.ajax({
-					url:"http://dbpedia.org/sparql?query="+encodeURI(queryMovement)+"&format=json",
-					type:"GET",
-					dataType:"json",
-					async:false,
-				}).done(function (answer){
-					if (answer.boolean){
-						var link = "<a href=\"../html/painter.html?painter=";//FIXME : address
-						//console.log(result.Resources[i]);
+					if (answer.results.bindings.length!=0){
+						var link="";
+						if (answer.results.bindings[0].v==undefined){
+							return;
+						}
+						if (answer.results.bindings[0].v.value==="Painter"){
+							link+="<a href=\"../html/painter.html?painter=";
+						} else if (answer.results.bindings[0].v.value==="Painting"){
+							link+="<a href=\"../html/work.html?work=";
+						} else if (answer.results.bindings[0].v.value==="Movement"){
+							link+="<a href=\"../html/movement.html?movement=";
+						}
 						link+=result.Resources[i]["@URI"].substr(result.Resources[i]["@URI"].lastIndexOf("/")+1);
 						link+="\">";
 						link+=result.Resources[i]["@surfaceForm"];

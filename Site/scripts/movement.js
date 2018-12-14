@@ -50,8 +50,9 @@ function fillArtists(data) {
 function fillArtist(resource,data){
 	console.log(data);
 	var artist = data[0];
+	var idAuthor = resource.replace("http://dbpedia.org/resource/","");
 	$("#painters-mov").append("<li>"
-		+ "<a href=\"painter.html?painter=" +resource+ "\">" + artist["name"]["value"] + "</a><br/>" 
+		+ "<a href=\"painter.html?painter=" +idAuthor+ "\">" + artist["name"]["value"] + "</a><br/>" 
 		+ "</li>");
 }
 function prepareMovementQuery(){ //UP-TO-DATE

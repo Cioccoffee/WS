@@ -61,7 +61,7 @@ function fillDetailedPaintings(data){
 		$("#informations").append("<tr><td><b>Type</b></td><td>"+ obj["type"]["value"] + "</td></tr>");
 	else
 		$("#informations").append("<tr><td><b>Type</b></td><td> unknown </td></tr>");
-
+	annotate("#description");
 	console.log(data);
 	}
 }

@@ -2,7 +2,7 @@ var PAINTER;
 $(document).ready(function(){
   launch();
 
-})
+});
 function getUrlParam(param){
   var pageURL = window.location.search.substring(1),
         uRLVariables = pageURL.split('&'),
@@ -156,6 +156,7 @@ console.log(data);
     $("#generalInfoTable").append("<tr><td><b>Nationality</b></td><td>" + painterObj["nationality"]["value"] + "</td></tr>");
   }
   $("#painterAbstract").html(abstract);
+  annotate("#painterAbstract");
   sendQuery(prepareMovementsQuery(), fillMovements);
 }
 

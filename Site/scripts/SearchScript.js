@@ -75,7 +75,6 @@ function getClosestNames(research){
         	results.push({resource : resource, distance:distance});
         }
       }
-      console.log(results);
       results.sort(function compare(a, b){
       	if (a.distance<b.distance){
       		return -1;
@@ -98,7 +97,6 @@ function getClosestNames(research){
 function searchPainters(){
   var name = $("#research_bar").val();
   name = toASCII(name);
-  console.log(name);
   getClosestNames(name);
 }
 

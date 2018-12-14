@@ -25,6 +25,9 @@ img{
 .flexi { 
 	display:flex;
 }
+ul {
+	list-style-type: none;
+}
 
 #description{
   border-left: 5px solid #4ca694;

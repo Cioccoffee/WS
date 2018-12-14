@@ -89,7 +89,7 @@ blockquote cite {
 	text-decoration:underline;
 }
 
-/*table{
+table{
 	width:100%;
 }
 table, tr, td{
@@ -105,7 +105,7 @@ tr:hover{
 td {
 	vertical-align:middle;
 	text-align:center
-}*/
+}
 
 img{
     max-width:500px;

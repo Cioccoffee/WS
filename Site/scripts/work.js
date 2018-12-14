@@ -42,7 +42,7 @@ function fillDetailedPaintings(data){
 		$("#img_depiction").attr("src",obj["depiction"]["value"]);
 
     if (obj.title !== undefined)
-	    $("#description").append("<h3>"+ obj["title"]["value"] + "</h3>");
+	    $("#description").append("<h2>"+ obj["title"]["value"] + "</h2>");
 	if (obj.description !== undefined)
 		$("#description").append("<p>"+ obj["description"]["value"] + "</p>");
 	else

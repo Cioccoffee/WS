@@ -130,7 +130,7 @@ function fillInfluencedBy(data){
 }
 function fillGeneralInfo(data){
   var painterObj = data[0];
-  
+
   var name = painterObj["name"]["value"];
   var abstract = painterObj["abstract"]["value"];
 console.log(data);
@@ -146,7 +146,7 @@ console.log(data);
     $("#generalInfoTable").append("<tr><td><b>Born</b></td><td id='birth-place'>" + painterObj["birth_date"]["value"] + "</td></tr>");
 	if (painterObj["birthPlace"] != undefined)
 		sendQuery(preparePlacesQuery(painterObj["birthPlace"]["value"]),fillBirthPlace);
-  if (painterObj["death_date"] != undefined) 
+  if (painterObj["death_date"] != undefined)
     $("#generalInfoTable").append("<tr><td><b>Died</b></td><td id='death-place'>" + painterObj["death_date"]["value"] + "</td></tr>");
 	if (painterObj["deathPlace"] != undefined)
 		sendQuery(preparePlacesQuery(painterObj["deathPlace"]["value"]),fillDeathPlace);
@@ -165,7 +165,7 @@ function fillBirthPlace(data){
 	console.log(data);
 	var placeObj = data[0];
 	if (placeObj["name"] != undefined) {
-		$("#birth-place").append(", "+placeObj["name"]["value"]);	
+		$("#birth-place").append(", "+placeObj["name"]["value"]);
 	}
 
 }
@@ -174,7 +174,7 @@ function fillDeathPlace(data){
 	console.log(data);
 	var placeObj = data[0];
 	if (placeObj["name"] != undefined) {
-		$("#death-place").append(", "+placeObj["name"]["value"]);	
+		$("#death-place").append(", "+placeObj["name"]["value"]);
 	}
 
 }

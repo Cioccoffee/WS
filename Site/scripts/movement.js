@@ -15,7 +15,7 @@ function getUrlParam(param){
             MOVEMENT  = parameterName[1] === undefined ? true : decodeURIComponent(parameterName[1]);
         }
     }
-	
+
 }
 //-----------------------------------------------
 
@@ -39,23 +39,29 @@ function fillMovement(data){
 }
 
 function fillArtists(data) {
-	console.log(data);
-	for (artist of data) {
-		if (artist["painter"] !== undefined){
-			var dbrArtist = artist["painter"]["value"];
-			sendQueryWithParam(prepareQueryArtistName(dbrArtist),fillArtist,dbrArtist);
-		}
-	}
+  for (painter of data){
+    var depiction = painter["depiction"] ? painter["depiction"]["value"] : "../resources/images/anonymous-person.png";
+    var name = painter["name"]["value"];
+    var painter = "painter.html?painter=" + painter["painter"]["value"].replace("http://dbpedia.org/resource/","");
+    $("#galleryPainters").append("<a href = \""+ painter +"\"><img src = \"" + depiction + "\" + data-image=\"" + depiction + "\" + alt=\"" + name + "\"></a>");
+  }
+  $("#galleryPainters").unitegallery({
+    tile_width: 180,						//tile width
+    tile_height: 150,
+    gallery_theme: "tilesgrid",
+    gallery_width: "100%",
+    grid_num_rows:1,
+    theme_navigation_type:"arrows",
+    theme_navigation_align: "center",
+    tile_enable_textpanel: true,
+    tile_textpanel_source: "alt",
+    tile_textpanel_title_text_align: "center",
+    tile_as_link : true,
+    tile_show_link_icon: true
+  });
 }
 
-function fillArtist(resource,data){
-	console.log(data);
-	var artist = data[0];
-	var idAuthor = resource.replace("http://dbpedia.org/resource/","");
-	$("#painters-mov").append("<li>"
-		+ "<a href=\"painter.html?painter=" +idAuthor+ "\">" + artist["name"]["value"] + "</a><br/>" 
-		+ "</li>");
-}
+
 function prepareMovementQuery(){ //UP-TO-DATE
   return "select ?name str(?description) as ?description where {\
          <http://dbpedia.org/resource/"+MOVEMENT+"> rdfs:label ?name.\
@@ -65,26 +71,17 @@ function prepareMovementQuery(){ //UP-TO-DATE
         FILTER(lang(?name) = \"en\")\
         FILTER(lang(?description) = \"en\")}";
 }
-function prepareQueryArtists() {
-	return "select DISTINCT ?painter where{\
-						VALUES ?original_mov {<http://dbpedia.org/resource/"+MOVEMENT+">} \
-		 				?painter a yago:Painter110391653.{\
-							{\
-								 ?painter dbo:movement ?original_mov.\
-							}\
-							UNION\
-							{\
-								 ?painter dbp:movement ?original_mov.\
-							}\
-  					}\
-				}"
+function prepareQueryArtists(){
+  return "select ?painter max(str(?name)) as ?name ?depiction where {\
+          ?painter a yago:Painter110391653;\
+          dbo:movement <http://dbpedia.org/resource/" + MOVEMENT + "> ;\
+          foaf:name ?name.\
+          OPTIONAL {?painter foaf:depiction ?depiction}\
+          FILTER (lang(?name)=\"en\")\
+         }\
+         ORDER BY DESC (?depiction)";
 }
 
-function prepareQueryArtistName(dbr) {
-
-	return "select ?name where {<"+dbr+"> foaf:name ?name. FILTER(lang(?name) = \"en\")}";
-
-}
 function sendQuery(query,func){
   URL = "http://dbpedia.org/sparql";
   var queryUrl = encodeURI(URL + "?query=" + query + "&format=json");
@@ -92,13 +89,3 @@ function sendQuery(query,func){
     func(response.results.bindings);
   });
 }
-
-function sendQueryWithParam(query,func,param){
-  URL = "http://dbpedia.org/sparql";
-  var queryUrl = encodeURI(URL + "?query=" + query + "&format=json");
-  $.ajax(queryUrl).done(function(response){
-    func(param,response.results.bindings);
-  });
-}
-
-

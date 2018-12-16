@@ -58,3 +58,6 @@ table, th, td {
   text-align: center;
   margin-top: 10px;
 }
+.flexi { 
+	display:flex;
+}
